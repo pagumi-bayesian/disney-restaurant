@@ -50,7 +50,7 @@ def lambda_handler(event, context):
     ntfy_always = event["ntfy_always"]
     
     # レストラン空き状況ページ
-    url = f"https://reserve.tokyodisneyresort.jp/restaurant/calendar/?searchUseDate={date}&searchAdultNum=2&searchChildNum=0&searchChildAgeInform=&searchWheelchairCount=0&searchStretcherCount=0&searchNameCd=RLGC0&searchKeyword=&reservationStatus=0&searchRestaurantTypeList=7&nameCd=RLGC0&contentsCd=03&useDate=20220428&mealDivList=3&adultNum=2&childNum=0&childAgeInform=&wheelchairCount=0&stretcherCount=0"
+    url = f"https://reserve.tokyodisneyresort.jp/restaurant/calendar/?searchUseDate={date}&searchAdultNum=2&searchChildNum=0&searchChildAgeInform=&searchWheelchairCount=0&searchStretcherCount=0&searchNameCd=RLGC0&searchKeyword=&reservationStatus=0&searchRestaurantTypeList=7&nameCd=RLGC0&contentsCd=03&useDate={date}&mealDivList=3&adultNum=2&childNum=0&childAgeInform=&wheelchairCount=0&stretcherCount=0"
     
     # ユーザーエージェントがないと弾かれるので設定
     user_agent = 'Mozilla/5.0 (Macintosh; Intel Mac OS X 10_15_7) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/100.0.4896.127 Safari/537.36'
@@ -125,3 +125,5 @@ def lambda_handler(event, context):
 
     return status_str
 
+
+# %%
