@@ -46,6 +46,8 @@ def lambda_handler(event, context):
     date = event["date"]
     # LINE notifyのトークン
     token = event["token"]
+    # 全て満席でも通知を送信するか(T:常に送信, F:空きがあるときだけ送信)
+    ntfy_always = event["ntfy_always"]
     
     # レストラン空き状況ページ
     url = f"https://reserve.tokyodisneyresort.jp/restaurant/calendar/?searchUseDate={date}&searchAdultNum=2&searchChildNum=0&searchChildAgeInform=&searchWheelchairCount=0&searchStretcherCount=0&searchNameCd=RLGC0&searchKeyword=&reservationStatus=0&searchRestaurantTypeList=7&nameCd=RLGC0&contentsCd=03&useDate=20220428&mealDivList=3&adultNum=2&childNum=0&childAgeInform=&wheelchairCount=0&stretcherCount=0"
@@ -83,7 +85,7 @@ def lambda_handler(event, context):
     status_all = (status_1 + '\n' + status_2).split('\n')
     
     # 文字列にまとめる    
-    status_str = f"{date}の空き状況"
+    status_str = f"\n{date}の空き状況"
     # 満席以外の時間帯の数
     num_not_full = 0
 
@@ -97,10 +99,11 @@ def lambda_handler(event, context):
     
     # 空きがあれば文字列追加
     if num_not_full > 0:
-        status_str = "空いている時間帯があります!!\n" + status_str
+        status_str = "\n空いている時間帯があります!!" + status_str + "\nURL : " + url
     
     # LINEに通知を送信
-    line_ntfy(status_str, token)
+    if (ntfy_always=='T') or (ntfy_always=='F' and num_not_full>0):
+        line_ntfy(status_str, token)
 
     # webdriverを閉じる
     driver.quit()
