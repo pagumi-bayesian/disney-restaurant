@@ -113,7 +113,9 @@ def lambda_handler(event, context):
     
     # LINEに通知を送信
     if (ntfy_always=='T') or (ntfy_always=='F' and num_not_full>0):
-        line_ntfy(status_str, token)
+        for t in token:
+            # 各tokenに対して通知を送信
+            line_ntfy(status_str, token=t)
 
     # webdriverを閉じる
     driver.quit()
