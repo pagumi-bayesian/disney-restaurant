@@ -84,17 +84,27 @@ def lambda_handler(event, context):
     status_2 = driver.find_element(By.XPATH, '//*[@id="restaurant_0"]/div[2]/div[2]/div/div/ul[1]').text
     status_all = (status_1 + '\n' + status_2).split('\n')
     
+    # 時間帯・空き状況をそれぞれリストにまとめる
+    list_time = list()
+    list_status = list()
+    for i in range(len(status_all)):
+        if ':' in status_all[i]:
+            list_time.append(status_all[i])
+            if i<=len(status_all) and status_all[i+1]=='満席':
+                list_status.append('満席')
+            else:
+                list_status.append('空席')
+    
     # 文字列にまとめる    
     status_str = f"\n{date}の空き状況"
     # 満席以外の時間帯の数
     num_not_full = 0
 
-    for i in range(round(len(status_all) / 2)):
-        # status_allの偶数番目には時間帯が、奇数番目には空き状況が格納されている
-        status_str += "\n" + status_all[2 * i] + " : " + status_all[2 * i + 1]
+    for i in range(len(list_status)):
+        status_str += "\n" + list_time[i] + " : " + list_status[i]
         
-        # 満席でない時間帯があれば、num_not_fullに1足す
-        if status_all[2 * i + 1] != "満席":
+        # 満席でない時間帯があれば、num_not_fullに1を足す
+        if list_status[i] != "満席":
             num_not_full += 1
     
     # 空きがあれば文字列追加
